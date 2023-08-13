@@ -32,7 +32,7 @@ export default function MovieRow({ movie }) {
 	function markFavorite(){
 		let favoriteMovies = favorites
 		if (_.find(favoriteMovies, { id: movie.id })){
-			favoriteMovies = _.filter(favoriteMovies, function(o) { return o.id != movie.id; })
+			favoriteMovies = _.filter(favoriteMovies, function(o) { return o.id !== movie.id; })
 		} else {
 			favoriteMovies = [...favoriteMovies, movie]
 		}
