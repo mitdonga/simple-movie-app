@@ -96,7 +96,7 @@ export default function MovieList() {
 
 	useEffect(() => {
 		queryInput.current.value = query;
-		queryInput.current.addEventListener('input', _.debounce(handleQuery, 1000))
+		queryInput.current.addEventListener('input', _.debounce(handleQuery, 500))
 	}, [])
 
 	return (
