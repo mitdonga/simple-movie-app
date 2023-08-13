@@ -11,6 +11,7 @@
 - Display the Favorite Movie list view Screen
 - Fetches movie data from https://www.api.themoviedb.org/
 - Light and dark theme
+- Responsive design
 
 ### Used following libraries
 1) **Recoil** for state management
