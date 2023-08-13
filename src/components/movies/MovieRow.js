@@ -12,14 +12,34 @@ import {
 } from '@chakra-ui/react'
 import { StarIcon } from '@chakra-ui/icons'
 import { useNavigate } from 'react-router-dom'
-import { formateReleaseDate } from '../../shared/dateFunctions'
+import { useRecoilState } from 'recoil'
+import { formateReleaseDate } from '../../shared/common'
+import { favoriteState } from '../../atoms/movieState'
+import _ from 'lodash'
 
-export default function MovieRow({ movie, isFavorite, markFavorite }) {
+export default function MovieRow({ movie }) {
+	const [favorites, setFavorites] = useRecoilState(favoriteState)
 	const navigate = useNavigate()
 
 	function showMovieDetails(){
 		navigate(`/movies/${movie.id}`)
 	}
+
+	function isFavorite(){
+		return _.find(favorites, { id: movie.id }) ? true : false
+	}
+
+	function markFavorite(){
+		let favoriteMovies = favorites
+		if (_.find(favoriteMovies, { id: movie.id })){
+			favoriteMovies = _.filter(favoriteMovies, function(o) { return o.id != movie.id; })
+		} else {
+			favoriteMovies = [...favoriteMovies, movie]
+		}
+		setFavorites(favoriteMovies)
+		localStorage.setItem('favorite movies', JSON.stringify(favoriteMovies))
+	}
+
 	return (
 		<>
 			<Stack

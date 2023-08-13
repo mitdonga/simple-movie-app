@@ -18,8 +18,7 @@ import {
 	List,
 	ListItem,
 } from '@chakra-ui/react'
-import { MdLocalShipping } from 'react-icons/md'
-import { formateReleaseDate } from '../../shared/dateFunctions';
+import { formateReleaseDate } from '../../shared/common';
 
 export default function MovieDetails() {
 	const { movieId } = useParams()
@@ -79,8 +78,8 @@ export default function MovieDetails() {
 								</Heading>
 								<Text
 									fontWeight={300}
-									fontSize={'4xl'}>
-									<Badge colorScheme='green'>Release Date - {formateReleaseDate(movie.release_date)}</Badge>
+									fontSize={'3xl'}>
+									<Badge colorScheme='green' fontSize='0.5em' >Release Date - {formateReleaseDate(movie.release_date)}</Badge>
 								</Text>
 							</Box>
 		
@@ -98,13 +97,19 @@ export default function MovieDetails() {
 								<Box>
 									<Text
 										fontSize={{ base: '16px', lg: '18px' }}
-										fontWeight={'500'}
+										fontWeight={'600'}
 										textTransform={'uppercase'}
-										mb={'4'}>
+										mb={'6'}>
 										Details
 									</Text>
 		
 									<List spacing={2}>
+										<ListItem>
+											<Text as={'span'} fontWeight={'bold'}>
+											Status:
+											</Text>{' '}
+											{movie.status}
+										</ListItem>
 										<ListItem>
 											<Text as={'span'} fontWeight={'bold'}>
 												Original Language:
@@ -121,25 +126,31 @@ export default function MovieDetails() {
 											<Text as={'span'} fontWeight={'bold'}>
 												Genres:
 											</Text>{' '}
-											{movie.genres.length > 0 ? movie.genres.map(genere => `${genere.name} `) : " -"}
+											{movie.genres.length > 0 ? movie.genres.map(genere => genere.name).join(", ") : " -"}
 										</ListItem>
 										<ListItem>
 											<Text as={'span'} fontWeight={'bold'}>
 											Spoken Languages:
 											</Text>{' '}
-											{movie.spoken_languages?.length > 0 ? movie.spoken_languages.map(l => `${l.name} `) : " -"}
+											{movie.spoken_languages?.length > 0 ? movie.spoken_languages.map(l => l.name).join(", ") : " -"}
+										</ListItem>
+										<ListItem>
+											<Text as={'span'} fontWeight={'bold'}>
+											Production Companies:
+											</Text>{' '}
+											{movie.production_companies?.length > 0 ? movie.production_companies.map(c => c.name).join(", ") : " -"}
+										</ListItem>
+										<ListItem>
+											<Text as={'span'} fontWeight={'bold'}>
+											Production Countries:
+											</Text>{' '}
+											{movie.production_countries?.length > 0 ? movie.production_countries.map(c => c.name).join(", ") : " -"}
 										</ListItem>
 										<ListItem>
 											<Text as={'span'} fontWeight={'bold'}>
 												Popularity:
 											</Text>{' '}
 											{movie.popularity}
-										</ListItem>
-										<ListItem>
-											<Text as={'span'} fontWeight={'bold'}>
-											Status:
-											</Text>{' '}
-											{movie.status}
 										</ListItem>
 									</List>
 								</Box>

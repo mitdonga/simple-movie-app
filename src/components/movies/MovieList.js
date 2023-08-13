@@ -3,17 +3,17 @@ import axios from 'axios';
 import MovieRow from './MovieRow';
 import { 
 	Spinner,
-	Center
+	Container
 } from '@chakra-ui/react'
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useRecoilState } from 'recoil';
-import movieState, { favoriteState } from '../../atoms/movieState';
+import movieState from '../../atoms/movieState';
 import paginationState from '../../atoms/paginationState';
 import _ from 'lodash/array';
 
 export default function MovieList() {
 	const [currentPage, setCurrentPage] = useRecoilState(paginationState)
-	const [favorites, setFavorites] = useRecoilState(favoriteState)
+	
 	const [movies, setMovies] = useRecoilState(movieState)
 
 	async function fetchMovies() {
@@ -48,29 +48,12 @@ export default function MovieList() {
 		fetchMovies();
 	}, [currentPage])
 
-	function markFavorite(movieId){
-		let favMovies = localStorage.getItem('favorite movies')
-		let movieIds = []
-		if (favMovies) {
-			movieIds = JSON.parse(favMovies)
-		}
-		if (movieIds.includes(movieId)){
-			movieIds = movieIds.filter(id => id != movieId)
-		} else movieIds.push(movieId)
-		setFavorites(movieIds)
-		localStorage.setItem('favorite movies', JSON.stringify(movieIds))
-	}
-
-	function isFavorite(movieId){
-		return favorites.find(id => id == movieId) ? true : false
-	}
-
 	function fetchNextPage(){
 		setCurrentPage(currentPage + 1)
 	}
 
 	return (
-		<Center>
+		<Container maxW='100%' centerContent>
 			<InfiniteScroll
 				dataLength={movies.length}
 				next={fetchNextPage}
@@ -83,12 +66,11 @@ export default function MovieList() {
 					<MovieRow 
 						movie={movie} 
 						key={movie.id}
-						isFavorite={isFavorite}
-						markFavorite={markFavorite}
+						// markFavorite={markFavorite}
 					/>
 				)}
 			</InfiniteScroll>
-		</Center>
+		</Container>
 	)
 }
 
