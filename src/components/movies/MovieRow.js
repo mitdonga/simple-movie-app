@@ -6,7 +6,8 @@ import {
 	Stack,
 	Text,
 	Image,
-	Badge
+	Badge,
+	Tooltip
 } from '@chakra-ui/react'
 import { StarIcon } from '@chakra-ui/icons'
 import { useNavigate } from 'react-router-dom'
@@ -69,7 +70,12 @@ export default function MovieRow({ movie }) {
 								markFavorite(movie.id);
 							}}
 						>
-							<StarIcon color={isFavorite(movie.id) ? 'red' : '#DADADA'} w={5} h={5} />
+							<Tooltip hasArrow 
+								label={isFavorite(movie.id) ? "Remove from favorites" : "Add to favorites"} 
+								bg='red.600' placement='top'
+							>
+								<StarIcon color={isFavorite(movie.id) ? 'red' : '#DADADA'} w={6} h={6} />
+							</Tooltip>
 						</Box>
 					</Flex>
 					<Text>
