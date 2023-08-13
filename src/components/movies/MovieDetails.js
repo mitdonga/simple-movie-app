@@ -26,6 +26,7 @@ export default function MovieDetails() {
 	const { movieId } = useParams()
 	const [movie, setMovie] = useState(null)
 
+	// fetchMovieDetails will fetch the details of the movie
 	async function fetchMovieDetails() {
 			const options = {
 				method: 'GET',
@@ -39,6 +40,7 @@ export default function MovieDetails() {
 			try {
 				const response = await axios(options);
 				if (response?.data) {
+					// Once we get the response update the movie state
 					setMovie(response.data)
 				}
 			} catch (error) {
@@ -48,6 +50,7 @@ export default function MovieDetails() {
 
 	useEffect(() => {
 		if (movieId) {
+			// On the component mount call the API to fetch details of movie
 			fetchMovieDetails()
 		}
 	}, [])

@@ -20,6 +20,7 @@ export default function MovieList() {
 	const [query, setQuery] = useRecoilState(queryState)
 	const [movies, setMovies] = useRecoilState(movieState)
 
+	// This function will fetch lasted movies 
 	async function fetchMovies() {
 		const options = {
 			method: 'GET',
@@ -45,6 +46,7 @@ export default function MovieList() {
 		}
 	}
 
+	// This function will fetch movies based on searched title
 	async function fetchMoviesBasedOnQuery() {
 		const options = {
 			method: 'GET',
@@ -68,14 +70,16 @@ export default function MovieList() {
 	}
 
 	function callAPI() {
-		if (query.length > 0) fetchMoviesBasedOnQuery()
-		else fetchMovies();
+		if (query.length > 0) fetchMoviesBasedOnQuery()  // If user query any movie title then call fetchMoviesBasedOnQuery
+		else fetchMovies();                              // else fetchMovies
 	}
 
+	// When the page count changes, call the API to fetch next set of movies
 	useEffect(() => {
 		callAPI()
 	}, [currentPage])
 
+	// when the query changes
 	useEffect(() => {
 		if (currentPage === 1) callAPI()
 		else setCurrentPage(1)
@@ -85,6 +89,7 @@ export default function MovieList() {
 		setCurrentPage(currentPage + 1)
 	}
 
+	// This will update the query state once user stop typing in search field
 	function handleQuery(event){
 		setQuery(event.target.value);
 	}
@@ -94,6 +99,8 @@ export default function MovieList() {
 		queryInput.current.value = '';
 	}
 
+	// On component mount add event listener on query input field
+	// Once user stop typing the movie title (stay ideal for 0.5 second), it will call handleQuery
 	useEffect(() => {
 		queryInput.current.value = query;
 		queryInput.current.addEventListener('input', _.debounce(handleQuery, 500))

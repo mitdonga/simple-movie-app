@@ -27,6 +27,8 @@ export default function MovieRow({ movie }) {
 		return _.find(favorites, { id: movie.id }) ? true : false
 	}
 
+	// When user click on favorite button, this function will be called
+	// If movie was already marked as favorite, then remove from favorites, else add to favorites
 	function markFavorite(){
 		let favoriteMovies = favorites
 		if (_.find(favoriteMovies, { id: movie.id })){

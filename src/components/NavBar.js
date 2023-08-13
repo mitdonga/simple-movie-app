@@ -22,8 +22,8 @@ export default function Nav() {
         <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
           <Box>
 						<Flex>
-							<Box><Link to="/">Movie World</Link></Box>
-							<Box ml={10}><Link to="/favorites">Favorites</Link></Box>
+							<Box><Link to="/"><strong>Movie World</strong></Link></Box>
+							<Box ml={20}><Link to="/favorites">Favorites</Link></Box>
 						</Flex>
 					</Box>
 

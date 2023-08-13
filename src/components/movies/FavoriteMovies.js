@@ -6,11 +6,13 @@ import {
 	Container
 } from '@chakra-ui/react'
 import MovieRow from './MovieRow'
-import movieState, { favoriteState } from '../../atoms/movieState';
+import { favoriteState } from '../../atoms/movieState';
 import { useRecoilState } from 'recoil'
 import _ from 'lodash'
 
 export default function FavoriteMovies() {
+
+	// Favorite Movies will be fetched from the browser's local storage
 	const [FavoriteMovies] = useRecoilState(favoriteState)
 
 	return (
