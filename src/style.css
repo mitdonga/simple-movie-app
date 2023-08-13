@@ -1,0 +1,12 @@
+.movie-row {
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+.fav-movie-icon:hover {
+	cursor: pointer;
+}
+
+.movie-row:hover {
+	cursor: pointer;
+}
