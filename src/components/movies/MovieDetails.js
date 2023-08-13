@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import {
 	Spinner,
@@ -10,17 +10,19 @@ import {
 	Image,
 	Flex,
 	VStack,
-	Button,
 	Heading,
 	SimpleGrid,
 	StackDivider,
 	Badge,
 	List,
 	ListItem,
+	Button,
+	Show
 } from '@chakra-ui/react'
 import { formateReleaseDate } from '../../shared/common';
 
 export default function MovieDetails() {
+	const navigate = useNavigate();
 	const { movieId } = useParams()
 	const [movie, setMovie] = useState(null)
 
@@ -33,6 +35,7 @@ export default function MovieDetails() {
 					Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmYWYyMjI4NWNkNjNiZWRmNTJjZWUzZTgzNjZjZjhlZSIsInN1YiI6IjY0ZDUxZGQxZjE0ZGFkMDEzYThhODQ0ZiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.r9erRGRieyDl8130fEVDeVJUJV-h-Y8uAWKm-D23eCw'
 				}
 			};
+
 			try {
 				const response = await axios(options);
 				if (response?.data) {
@@ -47,24 +50,30 @@ export default function MovieDetails() {
 		if (movieId) {
 			fetchMovieDetails()
 		}
-	}, [movieId])
+	}, [])
 
 	return (
 		<>
 			{movie ? 
 				<Container maxW={'7xl'}>
+					<Show above='sm'>
+						<Button 
+							style={{ float: 'right', marginTop: '20px' }}
+							onClick={() => navigate(-1)}
+						>
+							Back
+						</Button>
+					</Show>
 					<SimpleGrid
 						columns={{ base: 1, lg: 2 }}
 						spacing={{ base: 8, md: 10 }}
-						py={{ base: 18, md: 24 }}>
+						py={{ base: 8, md: 10 }}>
 						<Flex>
 							<Image
 								rounded={'md'}
 								alt={movie.title}
-								src={movie.poster_path ? `https://image.tmdb.org/t/p/original/${movie.poster_path}` : 'https://www.namepros.com/attachments/empty-png.89209/'} 
-								// fit={'cover'}
+								src={movie.poster_path ? `https://image.tmdb.org/t/p/original/${movie.poster_path}` : 'https://www.generationsforpeace.org/wp-content/uploads/2018/03/empty.jpg'} 
 								align={'center'}
-								// w={'100%'}
 								h={{ base: '100%', sm: '400px', lg: '500px' }}
 							/>
 						</Flex>

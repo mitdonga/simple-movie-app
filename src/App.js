@@ -4,9 +4,7 @@ import {
   theme,
 } from '@chakra-ui/react';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import {
-  RecoilRoot
-} from 'recoil';
+import { RecoilRoot } from 'recoil';
 
 import NavBar from './components/NavBar';
 import Dashboard from './components/Dashboard';

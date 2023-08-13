@@ -100,7 +100,7 @@ export default function MovieList() {
 
 	return (
 		<>
-			<Container maxW='80%' centerContent>
+			<Container maxW="100%" width={["100%", "80%", "60%"]} centerContent>
 				<Box>
 					<Input 
 						width="300px" my={5}
@@ -120,7 +120,7 @@ export default function MovieList() {
 						hasMore={true}
 						loader={<center><Spinner size='xl' mt={20}/></center>}
 						endMessage={<p>No more data to load.</p>}
-						style={{ margin: 'auto', width: '100%', overflow: 'hidden' }}
+						style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexWrap: 'wrap', width: '100%', overflow: 'hidden' }}
 					>
 						{movies.map((movie) => 
 							<MovieRow

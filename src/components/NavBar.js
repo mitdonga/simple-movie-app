@@ -12,7 +12,7 @@ import {
   useColorMode
 } from '@chakra-ui/react'
 import { MoonIcon, SunIcon } from '@chakra-ui/icons'
-import { Outlet, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export default function Nav() {
   const { colorMode, toggleColorMode } = useColorMode()

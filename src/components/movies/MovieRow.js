@@ -1,12 +1,10 @@
 import React from 'react'
 import { 
-	Heading,
 	Box,
 	Flex,
 	Spacer,
 	Stack,
 	Text,
-	Button,
 	Image,
 	Badge
 } from '@chakra-ui/react'
@@ -43,9 +41,9 @@ export default function MovieRow({ movie }) {
 	return (
 		<>
 			<Stack
-				width="80%" 
+				width="95%" 
 				spacing={3} direction='row' my={3} 
-				boxShadow='md' p='3' 
+				boxShadow='lg' p='3' 
 				rounded='md'
 				className='movie-row'
 				onClick={showMovieDetails}
