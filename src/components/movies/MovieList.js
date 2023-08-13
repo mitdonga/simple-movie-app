@@ -9,7 +9,7 @@ import {
 } from '@chakra-ui/react'
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useRecoilState } from 'recoil';
-import movieState from '../../atoms/movieState';
+import movieState, { queryState } from '../../atoms/movieState';
 import paginationState from '../../atoms/paginationState';
 import _ from 'lodash';
 import { CloseIcon } from '@chakra-ui/icons'
@@ -17,7 +17,7 @@ import { CloseIcon } from '@chakra-ui/icons'
 export default function MovieList() {
 	const queryInput = useRef(null)
 	const [currentPage, setCurrentPage] = useRecoilState(paginationState)
-	const [query, setQuery] = useState('')
+	const [query, setQuery] = useRecoilState(queryState)
 	const [movies, setMovies] = useRecoilState(movieState)
 
 	async function fetchMovies() {
@@ -95,6 +95,7 @@ export default function MovieList() {
 	}
 
 	useEffect(() => {
+		queryInput.current.value = query;
 		queryInput.current.addEventListener('input', _.debounce(handleQuery, 1000))
 	}, [])
 
