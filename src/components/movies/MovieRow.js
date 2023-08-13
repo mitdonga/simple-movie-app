@@ -54,7 +54,7 @@ export default function MovieRow({ movie }) {
 					<Image
 						boxSize='100px'
 						objectFit='cover'
-						src={movie.poster_path ? `https://image.tmdb.org/t/p/original/${movie.poster_path}` : 'https://www.namepros.com/attachments/empty-png.89209/'} 
+						src={movie.poster_path ? `https://image.tmdb.org/t/p/original/${movie.poster_path}` : 'https://www.generationsforpeace.org/wp-content/uploads/2018/03/empty.jpg'} 
 					/>
 				</Box>	
 				<Box width="100%">

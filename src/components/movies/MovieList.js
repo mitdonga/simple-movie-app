@@ -3,17 +3,21 @@ import axios from 'axios';
 import MovieRow from './MovieRow';
 import { 
 	Spinner,
-	Container
+	Container,
+	Input,
+	Box,
 } from '@chakra-ui/react'
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useRecoilState } from 'recoil';
 import movieState from '../../atoms/movieState';
 import paginationState from '../../atoms/paginationState';
-import _ from 'lodash/array';
+import _ from 'lodash';
+import { CloseIcon } from '@chakra-ui/icons'
 
 export default function MovieList() {
+	const queryInput = useRef(null)
 	const [currentPage, setCurrentPage] = useRecoilState(paginationState)
-	
+	const [query, setQuery] = useState('')
 	const [movies, setMovies] = useRecoilState(movieState)
 
 	async function fetchMovies() {
@@ -29,48 +33,106 @@ export default function MovieList() {
 				'release_date.lte': getTodayDate(),
 				sort_by: 'release_date.desc',
 			},
-			headers: {
-				accept: 'application/json',
-				Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmYWYyMjI4NWNkNjNiZWRmNTJjZWUzZTgzNjZjZjhlZSIsInN1YiI6IjY0ZDUxZGQxZjE0ZGFkMDEzYThhODQ0ZiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.r9erRGRieyDl8130fEVDeVJUJV-h-Y8uAWKm-D23eCw'
-			}
+			headers: requestHeader
 		};
 		try {
 			const response = await axios(options);
 			if (response.data?.results?.length > 0) {
-				setMovies(_.unionBy([...movies, ...response.data.results], 'id'))
+				currentPage === 1 ? setMovies(response.data.results) : setMovies(_.unionBy([...movies, ...response.data.results], 'id'))
 			}
 		} catch (error) {
 			console.error(error);
 		}
 	}
 
+	async function fetchMoviesBasedOnQuery() {
+		const options = {
+			method: 'GET',
+			url: 'https://api.themoviedb.org/3/search/movie',
+			params: {
+				query: query,
+				include_adult: false,
+				language: 'en-US',
+				page: currentPage
+			},
+			headers: requestHeader
+		};
+		try {
+			const response = await axios(options);
+			if (response.data?.results?.length > 0) {
+				currentPage === 1 ? setMovies(response.data.results) : setMovies(_.unionBy([...movies, ...response.data.results], 'id'))
+			}
+		} catch (error) {
+			console.error(error);
+		}
+	}
+
+	function callAPI() {
+		if (query.length > 0) fetchMoviesBasedOnQuery()
+		else fetchMovies();
+	}
+
 	useEffect(() => {
-		fetchMovies();
+		callAPI()
 	}, [currentPage])
+
+	useEffect(() => {
+		if (currentPage === 1) callAPI()
+		else setCurrentPage(1)
+	}, [query])
 
 	function fetchNextPage(){
 		setCurrentPage(currentPage + 1)
 	}
 
+	function handleQuery(event){
+		setQuery(event.target.value);
+	}
+
+	function clearQueryInput(){
+		setQuery('')
+		queryInput.current.value = '';
+	}
+
+	useEffect(() => {
+		queryInput.current.addEventListener('input', _.debounce(handleQuery, 1000))
+	}, [])
+
 	return (
-		<Container maxW='100%' centerContent>
-			<InfiniteScroll
-				dataLength={movies.length}
-				next={fetchNextPage}
-				hasMore={true}
-				loader={<Spinner size='xl' mt={20}/>}
-				endMessage={<p>No more data to load.</p>}
-				style={{ margin: 'auto', width: '100%' }}
-			>
-				{movies.map((movie) => 
-					<MovieRow 
-						movie={movie} 
-						key={movie.id}
-						// markFavorite={markFavorite}
+		<>
+			<Container maxW='80%' centerContent>
+				<Box>
+					<Input 
+						width="300px" my={5}
+						ref={queryInput} 
+						placeholder='Search Movie'
 					/>
-				)}
-			</InfiniteScroll>
-		</Container>
+					<CloseIcon 
+						ml='2' color='red' 
+						style={{ cursor: 'pointer'}} 
+						onClick={clearQueryInput}
+					/>
+				</Box>
+				{movies.length > 0 ?
+					<InfiniteScroll
+						dataLength={movies.length}
+						next={fetchNextPage}
+						hasMore={true}
+						loader={<center><Spinner size='xl' mt={20}/></center>}
+						endMessage={<p>No more data to load.</p>}
+						style={{ margin: 'auto', width: '100%', overflow: 'hidden' }}
+					>
+						{movies.map((movie) => 
+							<MovieRow
+								movie={movie} 
+								key={movie.id}
+							/>
+						)}
+					</InfiniteScroll> :
+					<Spinner size='xl' mt={20}/>
+				}
+			</Container>
+		</>
 	)
 }
 
@@ -80,4 +142,9 @@ function getTodayDate(){
 	const month = String(today.getMonth() + 1).padStart(2, '0'); // Months are zero-based
 	const day = String(today.getDate()).padStart(2, '0');
 	return `${year}-${month}-${day}`;
+}
+
+const requestHeader = {
+	accept: 'application/json',
+	Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmYWYyMjI4NWNkNjNiZWRmNTJjZWUzZTgzNjZjZjhlZSIsInN1YiI6IjY0ZDUxZGQxZjE0ZGFkMDEzYThhODQ0ZiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.r9erRGRieyDl8130fEVDeVJUJV-h-Y8uAWKm-D23eCw'
 }

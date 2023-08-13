@@ -14,12 +14,6 @@ export default function Dashboard() {
 	return (
 		<>
 			<Container maxW='100%' centerContent>
-				<Box mt="3">
-					<Input 
-						placeholder='Search' 
-						size='lg'
-					/>
-				</Box>
 				<MovieList />
 			</Container>
 		</>
